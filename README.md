@@ -25,3 +25,6 @@ MORE OPTIONS:
   `topItems getQuerySources getForwardDestinations getQueryTypes getAllQueries` 
   
   ( ^ options on the first row do not require api token )
+
+More info:
+https://discourse.pi-hole.net/t/pi-hole-api/1863
