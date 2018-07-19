@@ -29,11 +29,12 @@ MORE OPTIONS:
 More info:
 https://discourse.pi-hole.net/t/pi-hole-api/1863
 
-#hr
+---
 
 ### [pihole-whitelist.sh](pihole-whitelist) -  Cleans up source so pihole can add to whitelist
 
-Removes # and 'pihole -w' from source ("pihole-whitelist.txt"), then adds all domains to pihole whitelist.
+Removes '#' and 'pihole -w' from source ("pihole-whitelist.txt"), then adds all domains to pihole whitelist.
+
 Example "pihole-whitelist.txt" is included.
 
 Sources:
@@ -41,10 +42,12 @@ Sources:
 - https://firebog.net/
 
 USAGE
+
   `pihole-whitelist.sh [-h] help [-l] list/display only, [-s] add single domain`
 
 EXAMPLE
-  Just run without arguments: `pihole-whitelist.sh`
 
-#hr
+  `pihole-whitelist.sh` (without arguments)
+
+---
 
