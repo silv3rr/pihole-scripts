@@ -7,26 +7,42 @@
 #   https://discourse.pi-hole.net/t/commonly-whitelisted-domains/212
 #   https://firebog.net/
 
-whitelst="pihole-whitelist.txt"
+WL_FILE="pihole-whitelist.txt"
 
-l=0; s=0
+l=0
+s=0
+
 if echo "$@" | grep -iq '\-h'; then
-  printf "%s [-l] list/display only, [-s] add single domain\n" "$(basename "$0")"
-  printf "cleans up %s and adds to pihole\n" "$whitelst"; exit 0
-elif echo "$@" | grep -iq '\-l'; then l=1; shift
-elif echo "$@" | grep -iq '\-s'; then s=1; shift; fi
-if [ -s "$whitelst" ]; then
+  printf "Run './%s' to clean up \"%s\" and add to pihole\n" "$(basename "$0")" "$WL_FILE"
+  printf "Options: [-l] list/display only, [-s] add single domain\n"
+  exit 0
+elif echo "$@" | grep -iq '\-l'; then
+  l=1
+  shift
+elif echo "$@" | grep -iq '\-s'; then
+  s=1
+  shift
+fi
+if [ -s "$WL_FILE" ]; then
   while read -r i; do
-    if [ "$s" -eq 1 ]; then set -x; pihole -w -nr -q "$i"; set +x
-    else wl="$wl $i"; fi
+    if [ "$s" -eq 1 ]; then
+      set -x
+      pihole -w -nr -q "$i"
+      set +x
+    else
+      wl="$wl $i"
+    fi
   done <<-EOF
-    $( grep -v '^#' "$whitelst" | sed 's/pihole -w //g' | cut -d\( -f1 )
+    $( grep -v '^#' "$WL_FILE" | sed -e 's/pihole -w//g' -e 's/ [(-].*//' )
 EOF
+  wl="$( echo "$wl" | sed -e 's/^ *//' -e 's/  */ /g')"
   if [ "$l" -eq 0 ]; then
-   set -x; pihole -w "${wl# }"; set +x
+    set -x
+    pihole -w "$wl"
+    set +x
   else
-    echo "${wl# }"
+    echo "$wl"
   fi
 else
-  printf "%s not found\n" "$whitelst"
+  printf "%s not found\n" "$WL_FILE"
 fi
